@@ -55,22 +55,22 @@ const Projects = () => {
                 <>
                   {/* Project image */}
                   <div
-                    className="w-full flex items-center justify-center mb-4 rounded"
+                    className="w-full flex items-center justify-center mb-4 rounded project-image-container"
                     style={{
-                      height: 'clamp(90px, 25vw, 160px)',
-                      minHeight: '90px',
-                      maxHeight: '160px',
+                      height: 'clamp(120px, 35vw, 180px)', // increased min/max height
+                      minHeight: '120px',
+                      maxHeight: '180px',
                     }}
                   >
                     <img
                       src={project.image}
                       alt={project.title}
-                      className="object-cover rounded"
+                      className="object-cover rounded project-image"
                       style={{
-                        width: 'clamp(90px, 100%, 240px)',
+                        width: 'clamp(120px, 100%, 320px)',
                         height: '100%',
-                        maxHeight: '160px',
-                        minHeight: '90px',
+                        maxHeight: '180px',
+                        minHeight: '120px',
                         objectFit: 'cover',
                       }}
                     />

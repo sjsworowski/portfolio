@@ -48,6 +48,7 @@ const Experience = () => {
     <section className="container">
       {/* Replace Bootstrap row/col with CSS Grid */}
       <div
+        className="experience-grid"
         style={{
           display: 'grid',
           gap: '2rem',
@@ -64,6 +65,7 @@ const Experience = () => {
                   gap: '1rem',
                   alignItems: 'start',
                 }}
+                className="experience-inner-grid"
               >
                 {/* Date Column */}
                 <div>
@@ -85,8 +87,7 @@ const Experience = () => {
                       className="fw-semibold inline-flex items-center company-link group underline"
                       style={{
                         position: 'relative',
-                        color: 'var(--crt-accent)', // Use your accent color
-                        textDecorationColor: 'var(--crt-accent)',
+                        textDecorationColor: 'var(--crt-header-text)',
                         transition: 'color 0.2s'
                       }}
                     >
@@ -96,7 +97,7 @@ const Experience = () => {
                         width="16"
                         height="16"
                         fill="none"
-                        stroke="var(--crt-accent)" // Use the same accent color
+                        stroke="var(--crt-header-text)" // Use the same accent color
                         viewBox="0 0 24 24"
                         style={{
                           opacity: 1,
@@ -166,16 +167,16 @@ const Experience = () => {
           }
           .company-link:hover,
           .company-link:focus {
-            color: var(--crt-header-text) !important;
-            text-decoration-color: var(--crt-header-text) !important;
+            color: var(--crt-text) !important;
+            text-decoration-color: var(--crt-text) !important;
           }
           .company-link:hover .company-link-arrow,
           .company-link:focus .company-link-arrow {
-            stroke: var(--crt-header-text) !important;
+            stroke: var(--crt-text) !important;
             transform: rotate(180deg) translateX(-4px) translateY(4px) !important;
           }
           .company-link .company-link-arrow {
-            stroke: var(--crt-accent);
+            stroke: var(--crt-header-text);
           }
         `}
       </style>

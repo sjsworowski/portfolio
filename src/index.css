@@ -24,7 +24,7 @@
 
   body {
     background: var(--crt-bg);
-    background-image: url('./bg.png');
+    background-image: url('/bg.png');
     background-size: cover;
     background-repeat: repeat;
     color: var(--crt-text);
@@ -455,11 +455,11 @@ button:focus-visible {
 }
 
 .company-link {
-  color: #0000FF;
+  color: var(--crt-header-text);
   transition: color 0.2s;
 }
 .company-link:hover {
-  color: #000080;
+  color: var(--crt-text);
 }
 
 .crt-window-btn {
@@ -526,7 +526,7 @@ button:focus-visible {
   }
 
   .sidebar-link-btn {
-    width: 36px;
+    /* width: 50px; */
     height: 36px;
   }
 
@@ -574,14 +574,52 @@ button:focus-visible {
     padding: clamp(0.15rem, 1vw, 0.3rem) clamp(0.4rem, 2vw, 0.7rem) !important;
   }
 
-  .sidebar-link-btn {
+  /* .sidebar-link-btn {
     width: clamp(28px, 10vw, 36px);
     height: clamp(28px, 10vw, 36px);
-  }
+  } */
 
+@media (max-width: 600px) {
   .pixel-art-sprite {
-    width: clamp(60px, 22vw, 90px);
-    height: clamp(60px, 22vw, 90px);
-    background-size: clamp(240px, 88vw, 360px) clamp(180px, 66vw, 270px);
+    width: 150px !important;
+    height: 150px !important;
+    background-size: 600px 450px !important; /* 4 columns x 150px, 3 rows x 150px */
+  }
+}
+
+  .project-image-container {
+    min-height: 160px !important;
+    max-height: 220px !important;
+  }
+  .project-image {
+    min-height: 160px !important;
+    max-height: 220px !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .experience-inner-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+  .experience-inner-grid > div:first-child {
+    margin-bottom: 0.2em;
+  }
+  .experience-grid,
+  .experience-inner-grid,
+  .experience-inner-grid * {
+    font-size: 1.08em !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .sidebar-link-btn svg {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  .sidebar-link-btn .cv-label,
+  .sidebar-link-btn span,
+  .sidebar-link-btn a {
+    font-size: 1.1rem !important;
   }
 }
