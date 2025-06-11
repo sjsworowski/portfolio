@@ -1,5 +1,3 @@
-import 'bootstrap';
-
 const experiences = [
   {
     date: '2020 — PRESENT',
