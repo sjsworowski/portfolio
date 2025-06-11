@@ -542,8 +542,6 @@ button:focus-visible {
     font-size: clamp(11px, 3vw, 13px);
   }
 
-  .window,
-  .window-header,
   .window-content {
     padding-left: clamp(0.2rem, 2vw, 0.5rem) !important;
     padding-right: clamp(0.2rem, 2vw, 0.5rem) !important;
