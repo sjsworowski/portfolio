@@ -14,10 +14,13 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
+        working-directory: portfolio
       - run: npm run build
+        working-directory: portfolio
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
           channelId: live
-          projectId: your-firebase-project-id  # <-- Replace with your actual Firebase project ID
+          projectId: portfolio-302eb   # <-- Confirm this matches your Firebase Project ID
+          entryPoint: portfolio
