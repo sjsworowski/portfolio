@@ -493,8 +493,6 @@ button:focus-visible {
     font-size: 13px;
   }
 
-  .window,
-  .window-header,
   .window-content {
     padding-left: 0.5rem !important;
     padding-right: 0.5rem !important;
