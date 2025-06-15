@@ -46,7 +46,7 @@ const Projects = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-1 xl:grid-cols-3 gap-8">
             {projects.map((project) => {
               const projectLink = project.demo || project.github || undefined;
               const isClickable = !!projectLink;
@@ -54,25 +54,11 @@ const Projects = () => {
               const cardContent = (
                 <>
                   {/* Project image */}
-                  <div
-                    className="w-full flex items-center justify-center mb-4 rounded project-image-container"
-                    style={{
-                      height: 'clamp(120px, 35vw, 180px)', // increased min/max height
-                      minHeight: '120px',
-                      maxHeight: '180px',
-                    }}
-                  >
+                  <div className="w-full flex items-center justify-center mb-4 rounded project-image-container">
                     <img
                       src={project.image}
                       alt={project.title}
                       className="object-cover rounded project-image"
-                      style={{
-                        width: 'clamp(120px, 100%, 320px)',
-                        height: '100%',
-                        maxHeight: '180px',
-                        minHeight: '120px',
-                        objectFit: 'cover',
-                      }}
                     />
                   </div>
                   <div className="flex items-center mb-4">
