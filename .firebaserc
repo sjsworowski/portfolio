@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "portfolio-302eb"
+  },
+  "targets": {
+    "portfolio-302eb": {
+      "hosting": {
+        "staging": [
+          "portfolio-302eb"
+        ],
+        "production": [
+          "sworowski-prod"
+        ]
+      }
+    }
   }
 }

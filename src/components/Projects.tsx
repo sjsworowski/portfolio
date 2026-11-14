@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
 interface Project {
@@ -14,13 +15,13 @@ const Projects = () => {
     {
       title: "RayTrace",
       description: "RayTrace is a web app for accurate intraocular lens (IOL) calculation and lens selection, helping improve patient outcomes in cataract surgery.",
-      tech: ["Nest.js", "Typescript", "PostgreSQL", "API", "Automation"],
+      tech: ["NestJS", "Typescript", "PostgreSQL", "API"],
       demo: "https://raytrace.rayner.com",
       image: "raytrace.png"
     },
     {
       title: "Orthopaedic Fixation System",
-      description: "A novel orthopaedic fixation system designed to replace traditional bicortical screws, developed through 3D CAD modelling and prototyping.",
+      description: "A novel orthopaedic fixation system designed to replace traditional bicortical screws, developed through 3D CAD modelling, prototyping, strength testing.",
       tech: ["3D Modelling", "Additive Manufacturing", "Prototyping", "Mechanical Testing"],
       image: "screw.jpg"
     },
@@ -35,7 +36,54 @@ const Projects = () => {
       ],
       image: "greenhouse.jpg"
     },
+    {
+      title: "Learn Chinese Website",
+      description: "A website to help users learn Chinese, featuring interactive lessons, quizzes, and progress tracking.",
+      tech: ["Angular", "TypeScript", "NestJS",],
+      demo: "https://learn-chinese-15859.web.app/",
+      image: "learn_chinese.jpg"
+    },
+    {
+      title: "Retro Mini PC for Cat",
+      description: "A custom-built retro mini PC designed specifically for my cat, featuring a cozy enclosure and interactive elements.",
+      tech: ["Raspberry Pi", "3D Printing", "Electronics", "Python", "DIY"],
+      image: "retro_mini_pc.jpg"
+    },
+    {
+      title: "Home Automation Kettle Servo",
+      description: "My first electronics project that controls a kettle using a servo motor with an ESP32, enabling remote operation and scheduling using Alexa.",
+      tech: ["Arduino", "Servo Motor", "Home Automation", "IoT"],
+      image: "kettle_servo.jpg"
+    }
   ];
+
+  // Show the first few projects, with a toggle to reveal the rest as more are added
+  const INITIAL_COUNT = 3;
+  const [showAll, setShowAll] = useState(false);
+  const visibleProjects = showAll ? projects : projects.slice(0, INITIAL_COUNT);
+
+  // Scroll-driven colour: each image's --focus is 1 at the centre of the screen and fades to 0 away from it (used on mobile)
+  const gridRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const update = () => {
+      const containers = gridRef.current?.querySelectorAll<HTMLElement>('.project-image-container');
+      if (!containers) return;
+      const mid = window.innerHeight / 2;
+      const reach = window.innerHeight * 0.45;
+      containers.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        const dist = Math.abs(r.top + r.height / 2 - mid);
+        el.style.setProperty('--focus', Math.max(0, 1 - dist / reach).toFixed(2));
+      });
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    return () => {
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, [showAll]);
 
   return (
     <section id="projects">
@@ -46,19 +94,26 @@ const Projects = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <div className="grid md:grid-cols-1 xl:grid-cols-3 gap-8">
-            {projects.map((project) => {
+          <div className="project-grid" ref={gridRef}>
+            {visibleProjects.map((project) => {
               const projectLink = project.demo || project.github || undefined;
               const isClickable = !!projectLink;
 
               const cardContent = (
                 <>
                   {/* Project image */}
-                  <div className="w-full flex items-center justify-center mb-4 rounded project-image-container">
+                  <div className="w-full flex items-center justify-center mb-4 project-image-container">
                     <img
                       src={project.image}
                       alt={project.title}
-                      className="object-cover rounded project-image"
+                      className="project-image"
+                    />
+                    {/* Full-colour copy that fades in on hover */}
+                    <img
+                      src={project.image}
+                      alt=""
+                      aria-hidden="true"
+                      className="project-image project-image-color"
                     />
                   </div>
                   <div className="flex items-center mb-4">
@@ -106,7 +161,7 @@ const Projects = () => {
                   href={projectLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-primary/50 p-6 tech-tag-btn block rounded transition-shadow duration-150 hover:shadow-lg focus:shadow-lg outline-none cursor-pointer group"
+                  className="project-card group block"
                   tabIndex={0}
                   aria-label={`Open ${project.title} project`}
                   style={{ textDecoration: 'none', color: 'inherit' }}
@@ -116,13 +171,25 @@ const Projects = () => {
               ) : (
                 <div
                   key={project.title}
-                  className="bg-primary/50 p-6 tech-tag-btn rounded"
+                  className="project-card"
                 >
                   {cardContent}
                 </div>
               );
             })}
           </div>
+          {projects.length > INITIAL_COUNT && (
+            <div className="flex justify-center mt-8">
+              <button
+                type="button"
+                className="btn"
+                onClick={() => setShowAll((v) => !v)}
+                aria-expanded={showAll}
+              >
+                {showAll ? 'SHOW LESS' : `SHOW ALL ${projects.length} PROJECTS`}
+              </button>
+            </div>
+          )}
         </motion.div>
       </div>
       <style>

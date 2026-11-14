@@ -1,54 +1,74 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+
+const menu = [
+  { name: 'ABOUT', key: 'about' },
+  { name: 'EXPERIENCE', key: 'experience' },
+  { name: 'SKILLS', key: 'skills' },
+  { name: 'PROJECTS', key: 'projects' },
+];
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState(menu[0].key);
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const yOffset = -110;
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      let currentActiveSection = menu[0].key;
+      let minDistance = Number.POSITIVE_INFINITY;
+
+      for (const item of menu) {
+        const sectionElement = document.getElementById(item.key);
+        if (sectionElement) {
+          const rect = sectionElement.getBoundingClientRect();
+          const offset = 120;
+          const distance = Math.abs(rect.top - offset);
+
+          if (rect.top <= offset && distance < minDistance) {
+            minDistance = distance;
+            currentActiveSection = item.key;
+          }
+        }
+      }
+
+      if (
+        window.scrollY > 0 &&
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 10
+      ) {
+        currentActiveSection = menu[menu.length - 1].key;
+      }
+
+      setActiveSection(currentActiveSection);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
-  const navItems = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Contact', href: '#contact' },
-  ];
-
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-primary/90 backdrop-blur-sm shadow-lg' : 'bg-transparent'
-      }`}
-    >
-      <nav className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <a href="#home" className="text-2xl font-bold text-secondary">
-            Portfolio
-          </a>
-          <ul className="hidden md:flex space-x-8">
-            {navItems.map((item) => (
-              <li key={item.name}>
-                <a
-                  href={item.href}
-                  className="nav-link"
-                >
-                  {item.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </nav>
-    </motion.header>
+    <nav className="gb-tabs" aria-label="Sections">
+      {menu.map((item) => (
+        <button
+          key={item.key}
+          onClick={() => scrollToSection(item.key)}
+          className={`btn ${activeSection === item.key ? 'nav-link-active' : ''}`}
+        >
+          {item.name}
+        </button>
+      ))}
+    </nav>
   );
 };
 
-export default Navbar; 
+export default Navbar;

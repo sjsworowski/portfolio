@@ -1,13 +1,21 @@
-name: Deploy to Firebase Hosting on Tag
+name: Deploy to Firebase Hosting
 
 on:
   push:
+    branches:
+      - main
     tags:
-      - '*'  # Deploys on every tag push
+      - '*-prod'
+
+permissions:
+  contents: read
 
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    concurrency:
+      group: firebase-hosting-${{ github.ref_type == 'tag' && 'production' || 'staging' }}
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -17,7 +25,7 @@ jobs:
       - run: npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
           channelId: live
-          projectId: portfolio-302eb   # <-- Confirm this matches your Firebase Project ID
+          projectId: portfolio-302eb
+          target: ${{ github.ref_type == 'tag' && 'production' || 'staging' }}
